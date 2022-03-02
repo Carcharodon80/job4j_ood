@@ -6,6 +6,9 @@ import java.util.List;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
 
+/**
+ * 1. Принципы Kiss, Dry и Yagni [#238813].
+ */
 public class MaxMinTest {
 
     @org.junit.Test

@@ -3,7 +3,7 @@ package ru.job4j.kiss;
 import java.util.*;
 
 /**
- * 1. Принципы Kiss, Dry и Yagni [#238813]
+ * 1. Принципы Kiss, Dry и Yagni [#238813].
  */
 public class MaxMin {
     public <T> T max(List<T> value, Comparator<T> comparator) {
