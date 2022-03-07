@@ -53,13 +53,34 @@ public class CinemaTest {
     }
 
     @Ignore
-    @Test(expected = Exception.class)
+    @Test(expected = IllegalArgumentException.class)
     public void whenBuyWithInvalidRow() {
         Account account = new AccountCinema();
         Cinema cinema = new Cinema3D();
         Calendar date = Calendar.getInstance();
         date.set(2020, 10, 10, 23, 00);
         Ticket ticket = cinema.buy(account, 100, 1, date);
-        assertThat(ticket, is(new Ticket3D()));
+    }
+
+    @Ignore
+    @Test(expected = IllegalArgumentException.class)
+    public void whenBuyWithInvalidDate() {
+        Account account = new AccountCinema();
+        Cinema cinema = new Cinema3D();
+        Calendar date = Calendar.getInstance();
+        date.set(2020, 13, 10, 25, 00);
+        Ticket ticket = cinema.buy(account, 1, 1, date);
+    }
+
+    @Ignore
+    @Test(expected = IllegalArgumentException.class)
+    public void whenBuySoldedTicket() {
+        Account account1 = new AccountCinema();
+        Account account2 = new AccountCinema();
+        Cinema cinema = new Cinema3D();
+        Calendar date = Calendar.getInstance();
+        date.set(2020, 10, 10, 23, 00);
+        Ticket ticket1 = cinema.buy(account1, 1, 1, date);
+        Ticket ticket2 = cinema.buy(account2, 1, 1, date);
     }
 }
