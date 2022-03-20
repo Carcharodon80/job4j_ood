@@ -77,12 +77,12 @@ public class ReportEngineTest {
                 .append(worker1.getName()).append(";")
                 .append(worker1.getHired()).append(";")
                 .append(worker1.getFired()).append(";")
-                .append(worker1.getSalary() / 100).append("$")
+                .append(worker1.getSalary() / DollarsReport.dollar).append("$")
                 .append(System.lineSeparator())
                 .append(worker2.getName()).append(";")
                 .append(worker2.getHired()).append(";")
                 .append(worker2.getFired()).append(";")
-                .append(worker2.getSalary() / 100).append("$")
+                .append(worker2.getSalary() / DollarsReport.dollar).append("$")
                 .append(System.lineSeparator());
         assertThat(engine.generate(em -> true), is(expect.toString()));
     }
