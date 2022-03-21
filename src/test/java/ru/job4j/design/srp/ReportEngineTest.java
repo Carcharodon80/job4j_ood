@@ -1,8 +1,12 @@
 package ru.job4j.design.srp;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
@@ -111,5 +115,56 @@ public class ReportEngineTest {
                 .append(worker3.getSalary())
                 .append(System.lineSeparator());
         assertThat(engine.generate(em -> true), is(expect.toString()));
+    }
+
+    @Test
+    public void whenJSONGenerated() {
+        MemStore store = new MemStore();
+        Calendar now = Calendar.getInstance();
+        Employee worker1 = new Employee("Ivan", now, now, 100);
+        Employee worker2 = new Employee("Petr", now, now, 355);
+        store.add(worker1);
+        store.add(worker2);
+        Report engine = new JSONReport(store);
+        String report = engine.generate(em -> true);
+        Gson gson = new GsonBuilder().create();
+        MemStore expected = gson.fromJson(report, MemStore.class);
+        System.out.println(expected.toString());
+        assertEquals(expected, store);
+        /*StringBuilder expect = new StringBuilder()
+                .append("[")
+                .append("{\"name\":\"").append(worker1.getName()).append("\",")
+                .append("\"hired\":")
+                .append("{\"year\":").append(worker1.getHired().get(Calendar.YEAR)).append(",")
+                .append("\"month\":").append(worker1.getHired().get(Calendar.MONTH)).append(",")
+                .append("\"dayOfMonth\":").append(worker1.getHired().get(Calendar.DAY_OF_MONTH)).append(",")
+                .append("\"hourOfDay\":").append(worker1.getHired().get(Calendar.HOUR_OF_DAY)).append(",")
+                .append("\"minute\":").append(worker1.getHired().get(Calendar.MINUTE)).append(",")
+                .append("\"second\":").append(worker1.getHired().get(Calendar.SECOND)).append("},")
+                .append("\"fired\":")
+                .append("{\"year\":").append(worker1.getFired().get(Calendar.YEAR)).append(",")
+                .append("\"month\":").append(worker1.getFired().get(Calendar.MONTH)).append(",")
+                .append("\"dayOfMonth\":").append(worker1.getFired().get(Calendar.DAY_OF_MONTH)).append(",")
+                .append("\"hourOfDay\":").append(worker1.getFired().get(Calendar.HOUR_OF_DAY)).append(",")
+                .append("\"minute\":").append(worker1.getFired().get(Calendar.MINUTE)).append(",")
+                .append("\"second\":").append(worker1.getFired().get(Calendar.SECOND)).append("},")
+                .append("\"salary\":").append(worker1.getSalary()).append("},")
+                .append("{\"name\":\"").append(worker2.getName()).append("\",")
+                .append("\"hired\":")
+                .append("{\"year\":").append(worker2.getHired().get(Calendar.YEAR)).append(",")
+                .append("\"month\":").append(worker2.getHired().get(Calendar.MONTH)).append(",")
+                .append("\"dayOfMonth\":").append(worker2.getHired().get(Calendar.DAY_OF_MONTH)).append(",")
+                .append("\"hourOfDay\":").append(worker2.getHired().get(Calendar.HOUR_OF_DAY)).append(",")
+                .append("\"minute\":").append(worker2.getHired().get(Calendar.MINUTE)).append(",")
+                .append("\"second\":").append(worker2.getHired().get(Calendar.SECOND)).append("},")
+                .append("\"fired\":")
+                .append("{\"year\":").append(worker2.getFired().get(Calendar.YEAR)).append(",")
+                .append("\"month\":").append(worker2.getFired().get(Calendar.MONTH)).append(",")
+                .append("\"dayOfMonth\":").append(worker2.getFired().get(Calendar.DAY_OF_MONTH)).append(",")
+                .append("\"hourOfDay\":").append(worker2.getFired().get(Calendar.HOUR_OF_DAY)).append(",")
+                .append("\"minute\":").append(worker2.getFired().get(Calendar.MINUTE)).append(",")
+                .append("\"second\":").append(worker2.getFired().get(Calendar.SECOND)).append("},")
+                .append("\"salary\":").append(worker2.getSalary()).append("}")
+                .append("]");*/
     }
 }
