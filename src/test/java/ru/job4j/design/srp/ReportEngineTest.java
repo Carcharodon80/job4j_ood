@@ -4,8 +4,13 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.junit.Test;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import static org.hamcrest.Matchers.is;
@@ -127,11 +132,11 @@ public class ReportEngineTest {
         store.add(worker2);
         Report engine = new JSONReport(store);
         String report = engine.generate(em -> true);
-        Gson gson = new GsonBuilder().create();
-        MemStore expected = gson.fromJson(report, MemStore.class);
-        System.out.println(expected.toString());
-        assertEquals(expected, store);
-        /*StringBuilder expect = new StringBuilder()
+        //Gson gson = new GsonBuilder().create();
+        //MemStore expected = gson.fromJson(report, MemStore.class);
+        //System.out.println(expected.toString());
+        //assertEquals(expected, store);
+        StringBuilder expect = new StringBuilder()
                 .append("[")
                 .append("{\"name\":\"").append(worker1.getName()).append("\",")
                 .append("\"hired\":")
@@ -165,6 +170,33 @@ public class ReportEngineTest {
                 .append("\"minute\":").append(worker2.getFired().get(Calendar.MINUTE)).append(",")
                 .append("\"second\":").append(worker2.getFired().get(Calendar.SECOND)).append("},")
                 .append("\"salary\":").append(worker2.getSalary()).append("}")
-                .append("]");*/
+                .append("]");
+        assertEquals(expect.toString(), report);
+    }
+
+    @Test
+    public void whenXMLGenerated() {
+        MemStore store = new MemStore();
+        Calendar hired = new GregorianCalendar(2022, 02, 02);
+        Calendar fired = new GregorianCalendar(2022, 03, 02);
+        Employee worker1 = new Employee("Ivan", hired, fired, 100);
+        Employee worker2 = new Employee("Petr", hired, fired, 355);
+        store.add(worker1);
+        store.add(worker2);
+        List<Employee> oldList = store.findBy(em -> true);
+
+        Report engine = new XMLReport(store);
+        String reportXML = engine.generate(em -> true);
+        StringReader reader = new StringReader(reportXML);
+        List<Employee> newList = new ArrayList<>();
+        try {
+            JAXBContext context = JAXBContext.newInstance(Employees.class, Employee.class);
+            Unmarshaller unmarshaller = context.createUnmarshaller();
+            Employees employees = (Employees) unmarshaller.unmarshal(reader);
+        } catch (JAXBException e) {
+            e.printStackTrace();
+        }
+
+        assertEquals(oldList, newList);
     }
 }
