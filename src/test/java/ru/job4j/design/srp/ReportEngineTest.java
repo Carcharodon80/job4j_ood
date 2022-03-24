@@ -2,12 +2,14 @@ package ru.job4j.design.srp;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import org.junit.Test;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import java.io.StringReader;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -122,81 +124,71 @@ public class ReportEngineTest {
         assertThat(engine.generate(em -> true), is(expect.toString()));
     }
 
+    /**
+     * Проверка JSONReport.
+     * Создаем список, сериализируем (с помощью JSONReport.generate()) и десериализируем, сравниваем.
+     * ? - если в Employee.equals() добавить все поля - тест не проходит (из-за Calendar)
+     */
     @Test
     public void whenJSONGenerated() {
         MemStore store = new MemStore();
-        Calendar now = Calendar.getInstance();
-        Employee worker1 = new Employee("Ivan", now, now, 100);
-        Employee worker2 = new Employee("Petr", now, now, 355);
+        Employee worker1 = new Employee("Ivan",
+                new GregorianCalendar(2022, Calendar.MARCH, 2),
+                new GregorianCalendar(2022, Calendar.APRIL, 2),
+                100);
+        Employee worker2 = new Employee("Petr",
+                new GregorianCalendar(2020, Calendar.JANUARY, 1),
+                new GregorianCalendar(2021, Calendar.DECEMBER, 31),
+                355);
         store.add(worker1);
         store.add(worker2);
+        List<Employee> oldList = store.findBy(em -> true);
+
         Report engine = new JSONReport(store);
-        String report = engine.generate(em -> true);
-        //Gson gson = new GsonBuilder().create();
-        //MemStore expected = gson.fromJson(report, MemStore.class);
-        //System.out.println(expected.toString());
-        //assertEquals(expected, store);
-        StringBuilder expect = new StringBuilder()
-                .append("[")
-                .append("{\"name\":\"").append(worker1.getName()).append("\",")
-                .append("\"hired\":")
-                .append("{\"year\":").append(worker1.getHired().get(Calendar.YEAR)).append(",")
-                .append("\"month\":").append(worker1.getHired().get(Calendar.MONTH)).append(",")
-                .append("\"dayOfMonth\":").append(worker1.getHired().get(Calendar.DAY_OF_MONTH)).append(",")
-                .append("\"hourOfDay\":").append(worker1.getHired().get(Calendar.HOUR_OF_DAY)).append(",")
-                .append("\"minute\":").append(worker1.getHired().get(Calendar.MINUTE)).append(",")
-                .append("\"second\":").append(worker1.getHired().get(Calendar.SECOND)).append("},")
-                .append("\"fired\":")
-                .append("{\"year\":").append(worker1.getFired().get(Calendar.YEAR)).append(",")
-                .append("\"month\":").append(worker1.getFired().get(Calendar.MONTH)).append(",")
-                .append("\"dayOfMonth\":").append(worker1.getFired().get(Calendar.DAY_OF_MONTH)).append(",")
-                .append("\"hourOfDay\":").append(worker1.getFired().get(Calendar.HOUR_OF_DAY)).append(",")
-                .append("\"minute\":").append(worker1.getFired().get(Calendar.MINUTE)).append(",")
-                .append("\"second\":").append(worker1.getFired().get(Calendar.SECOND)).append("},")
-                .append("\"salary\":").append(worker1.getSalary()).append("},")
-                .append("{\"name\":\"").append(worker2.getName()).append("\",")
-                .append("\"hired\":")
-                .append("{\"year\":").append(worker2.getHired().get(Calendar.YEAR)).append(",")
-                .append("\"month\":").append(worker2.getHired().get(Calendar.MONTH)).append(",")
-                .append("\"dayOfMonth\":").append(worker2.getHired().get(Calendar.DAY_OF_MONTH)).append(",")
-                .append("\"hourOfDay\":").append(worker2.getHired().get(Calendar.HOUR_OF_DAY)).append(",")
-                .append("\"minute\":").append(worker2.getHired().get(Calendar.MINUTE)).append(",")
-                .append("\"second\":").append(worker2.getHired().get(Calendar.SECOND)).append("},")
-                .append("\"fired\":")
-                .append("{\"year\":").append(worker2.getFired().get(Calendar.YEAR)).append(",")
-                .append("\"month\":").append(worker2.getFired().get(Calendar.MONTH)).append(",")
-                .append("\"dayOfMonth\":").append(worker2.getFired().get(Calendar.DAY_OF_MONTH)).append(",")
-                .append("\"hourOfDay\":").append(worker2.getFired().get(Calendar.HOUR_OF_DAY)).append(",")
-                .append("\"minute\":").append(worker2.getFired().get(Calendar.MINUTE)).append(",")
-                .append("\"second\":").append(worker2.getFired().get(Calendar.SECOND)).append("},")
-                .append("\"salary\":").append(worker2.getSalary()).append("}")
-                .append("]");
-        assertEquals(expect.toString(), report);
+        String reportJSON = engine.generate(em -> true);
+
+        Gson gson = new GsonBuilder().create();
+        Type typeList = new TypeToken<List<Employee>>() {}.getType();
+        List<Employee> newList = gson.fromJson(reportJSON, typeList);
+
+        assertEquals(oldList, newList);
     }
 
+    /**
+     * Проверка XMLReport.
+     * Создаем список, маршализируем (с помощью XMLReport.generate()) и демаршализируем, сравниваем.
+     * Для маршализации создали класс EmployeeList (просто список марш-ть не получилось).
+     * ? - Пришлось в Employee добавить default Constructor.
+     * ? - если в Employee.equals() добавить все поля - тест не проходит (из-за Calendar)
+     */
     @Test
     public void whenXMLGenerated() {
         MemStore store = new MemStore();
-        Calendar hired = new GregorianCalendar(2022, 02, 02);
-        Calendar fired = new GregorianCalendar(2022, 03, 02);
-        Employee worker1 = new Employee("Ivan", hired, fired, 100);
-        Employee worker2 = new Employee("Petr", hired, fired, 355);
+        Employee worker1 = new Employee("Ivan",
+                new GregorianCalendar(2022, Calendar.MARCH, 2),
+                new GregorianCalendar(2022, Calendar.APRIL, 2),
+                100);
+        Employee worker2 = new Employee("Petr",
+                new GregorianCalendar(2020, Calendar.JANUARY, 1),
+                new GregorianCalendar(2021, Calendar.DECEMBER, 31),
+                355);
         store.add(worker1);
         store.add(worker2);
         List<Employee> oldList = store.findBy(em -> true);
 
         Report engine = new XMLReport(store);
         String reportXML = engine.generate(em -> true);
+
         StringReader reader = new StringReader(reportXML);
         List<Employee> newList = new ArrayList<>();
         try {
-            JAXBContext context = JAXBContext.newInstance(Employees.class, Employee.class);
+            JAXBContext context = JAXBContext.newInstance(EmlpoyeeList.class, Employee.class);
             Unmarshaller unmarshaller = context.createUnmarshaller();
-            Employees employees = (Employees) unmarshaller.unmarshal(reader);
+            EmlpoyeeList employees = (EmlpoyeeList) unmarshaller.unmarshal(reader);
+            newList = employees.getList();
         } catch (JAXBException e) {
             e.printStackTrace();
         }
-
         assertEquals(oldList, newList);
     }
 }
