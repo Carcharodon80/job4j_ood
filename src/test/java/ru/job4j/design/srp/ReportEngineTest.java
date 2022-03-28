@@ -3,6 +3,7 @@ package ru.job4j.design.srp;
 import org.junit.Test;
 
 import java.text.SimpleDateFormat;
+import java.time.ZoneOffset;
 import java.util.*;
 
 import static org.hamcrest.Matchers.is;
@@ -184,6 +185,8 @@ public class ReportEngineTest {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Calendar worker1Hired = new GregorianCalendar(2022, Calendar.MARCH, 2);
         Calendar worker1Fired = new GregorianCalendar(2022, Calendar.APRIL, 2);
+        worker1Hired.setTimeZone(TimeZone.getTimeZone(ZoneOffset.of("+3")));
+        worker1Fired.setTimeZone(TimeZone.getTimeZone(ZoneOffset.of("+3")));
         Employee worker1 = new Employee("Ivan", worker1Hired, worker1Fired, 100);
         store.add(worker1);
         Report engine = new XMLReport(store);
