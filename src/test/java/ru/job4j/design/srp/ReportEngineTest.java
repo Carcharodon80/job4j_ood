@@ -182,7 +182,7 @@ public class ReportEngineTest {
     @Test
     public void whenXMLGenerated() {
         MemStore store = new MemStore();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
         Calendar worker1Hired = new GregorianCalendar(2022, Calendar.MARCH, 2);
         Calendar worker1Fired = new GregorianCalendar(2022, Calendar.APRIL, 2);
         worker1Hired.setTimeZone(TimeZone.getTimeZone(ZoneOffset.of("+3")));
@@ -196,10 +196,10 @@ public class ReportEngineTest {
                 .append("<employeelist>")
                 .append("<employee>")
                 .append("<fired>").append(sdf.format(worker1Fired.getTime()))
-                .append("T00:00:00+03:00")
+                //.append("T00:00:00+03:00")
                 .append("</fired>")
                 .append("<hired>").append(sdf.format(worker1Hired.getTime()))
-                .append("T00:00:00+03:00")
+                //.append("T00:00:00+03:00")
                 .append("</hired>")
                 .append("<name>").append(worker1.getName()).append("</name>")
                 .append("<salary>").append(worker1.getSalary()).append("</salary>")
