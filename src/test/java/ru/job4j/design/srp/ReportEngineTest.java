@@ -182,11 +182,11 @@ public class ReportEngineTest {
     @Test
     public void whenXMLGenerated() {
         MemStore store = new MemStore();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX", Locale.UK);
         Calendar worker1Hired = new GregorianCalendar(2022, Calendar.MARCH, 2);
         Calendar worker1Fired = new GregorianCalendar(2022, Calendar.APRIL, 2);
-        worker1Hired.setTimeZone(TimeZone.getTimeZone(ZoneOffset.of("+3")));
-        worker1Fired.setTimeZone(TimeZone.getTimeZone(ZoneOffset.of("+3")));
+        /*worker1Hired.setTimeZone(TimeZone.getTimeZone(ZoneOffset.of("+1")));
+        worker1Fired.setTimeZone(TimeZone.getTimeZone(ZoneOffset.of("+1")));*/
         Employee worker1 = new Employee("Ivan", worker1Hired, worker1Fired, 100);
         store.add(worker1);
         Report engine = new XMLReport(store);
