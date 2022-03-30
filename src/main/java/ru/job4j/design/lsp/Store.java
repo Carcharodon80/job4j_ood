@@ -17,7 +17,7 @@ public class Store {
         Storage trash = new Trash();
         List<Storage> storages = Arrays.asList(shop, warehouse, trash);
         ControlQuality controlQuality = new ControlQuality(storages);
-        controlQuality.check(bread);
+        controlQuality.distribute(bread);
         System.out.println();
     }
 }

@@ -9,7 +9,7 @@ public class ControlQuality {
         this.storages = storages;
     }
 
-    public void check(Food food) {
+    public void distribute(Food food) {
         for (Storage storage : storages) {
             if (storage.check(food)) {
                 storage.add(food);

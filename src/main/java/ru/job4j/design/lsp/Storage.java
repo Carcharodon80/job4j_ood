@@ -8,6 +8,10 @@ public interface Storage {
 
     boolean check(Food food);
 
+    void add(Food food);
+
+    List<Food> getFoodList();
+
     /**
      * метод проверяет, сколько процентов срока годности прошло
      * @return в процентах, сколько прошло срока годности (весь срок - 4 дня, прошло 3 дня, возвращает 75)
@@ -17,8 +21,4 @@ public interface Storage {
         long lastedTime = ChronoUnit.DAYS.between(food.getCreateDate(), LocalDate.now());
         return (double) lastedTime / allTime * 100;
     }
-
-    void add(Food food);
-
-    List<Food> getFoodList();
 }

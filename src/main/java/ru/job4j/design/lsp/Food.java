@@ -10,6 +10,9 @@ public abstract class Food {
     private int dicsount;
 
     public Food(String name, LocalDate expiryDate, LocalDate createDate, double price, int dicsount) {
+        if (expiryDate.isBefore(createDate) || (createDate.isAfter(LocalDate.now()))) {
+            throw new IllegalArgumentException();
+        }
         Name = name;
         this.expiryDate = expiryDate;
         this.createDate = createDate;

@@ -24,10 +24,20 @@ public class StoreTest {
                 30,
                 50
                 );
-        controlQuality.check(bread);
+        Food milk = new Milk("Moloko",
+                LocalDate.now().plusDays(20),
+                LocalDate.now().minusDays(2),
+                40,
+                10
+        );
+        controlQuality.distribute(bread);
+        controlQuality.distribute(milk);
         assertTrue(warehouse.getFoodList().contains(bread));
         assertFalse(shop.getFoodList().contains(bread));
         assertFalse(trash.getFoodList().contains(bread));
+        assertTrue(warehouse.getFoodList().contains(milk));
+        assertFalse(shop.getFoodList().contains(milk));
+        assertFalse(trash.getFoodList().contains(milk));
     }
 
     /**
@@ -45,7 +55,7 @@ public class StoreTest {
                 30,
                 50
         );
-        controlQuality.check(bread);
+        controlQuality.distribute(bread);
         assertTrue(shop.getFoodList().contains(bread));
         assertFalse(warehouse.getFoodList().contains(bread));
         assertFalse(trash.getFoodList().contains(bread));
@@ -66,7 +76,7 @@ public class StoreTest {
                 30,
                 50
         );
-        controlQuality.check(bread);
+        controlQuality.distribute(bread);
         assertTrue(shop.getFoodList().contains(bread));
         assertEquals(15, shop.getFoodList().get(0).getPrice(), 0.0);
         assertFalse(warehouse.getFoodList().contains(bread));
@@ -88,9 +98,35 @@ public class StoreTest {
                 30,
                 50
         );
-        controlQuality.check(bread);
+        controlQuality.distribute(bread);
         assertTrue(trash.getFoodList().contains(bread));
         assertFalse(warehouse.getFoodList().contains(bread));
         assertFalse(shop.getFoodList().contains(bread));
+    }
+
+    /**
+     * дата создания продукта еще не настал
+     */
+    @Test (expected = IllegalArgumentException.class)
+    public void whenFoodCreatedOnNextWeek() {
+        Food bread = new Bread("Borodinsky",
+                LocalDate.now().plusDays(20),
+                LocalDate.now().plusDays(10),
+                30,
+                50
+        );
+    }
+
+    /**
+     * срок годности истекает раньше даты создания
+     */
+    @Test (expected = IllegalArgumentException.class)
+    public void whenExpiryTimeBeforeCreateTime() {
+        Food bread = new Bread("Borodinsky",
+                LocalDate.of(2022, 2, 28),
+                LocalDate.of(2022, 3, 1),
+                30,
+                50
+        );
     }
 }
