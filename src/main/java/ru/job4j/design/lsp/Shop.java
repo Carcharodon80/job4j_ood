@@ -14,17 +14,20 @@ public class Shop implements Storage {
     }
 
     @Override
-    public void add(Food food) {
+    public boolean add(Food food) {
+        boolean rsl = false;
         double percentageTime = getPercentageTime(food);
-        if (percentageTime >= 25 && percentageTime < 75) {
+        if (check(food)) {
+            if (percentageTime >= 75 && percentageTime < 100) {
+                food.setPrice(food.getPrice() * (100 - food.getDicsount()) / 100);
+            }
             foodList.add(food);
-        } else if (percentageTime >= 75 && percentageTime < 100) {
-            food.setPrice(food.getPrice() * (100 - food.getDicsount()) / 100);
-            foodList.add(food);
+            rsl = true;
         }
+        return rsl;
     }
 
     public List<Food> getFoodList() {
-        return foodList;
+        return List.copyOf(foodList);
     }
 }

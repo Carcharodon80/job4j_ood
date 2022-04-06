@@ -11,11 +11,15 @@ public class Warehouse implements Storage{
         return getPercentageTime(food) < 25;
     }
 
-    public void add(Food food) {
-        foodList.add(food);
+    public boolean add(Food food) {
+        boolean rsl = false;
+        if (check(food)) {
+            foodList.add(food);
+            rsl = true;
+        }
+        return rsl;
     }
 
     public List<Food> getFoodList() {
-        return foodList;
-    }
+        return List.copyOf(foodList);    }
 }

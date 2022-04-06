@@ -12,11 +12,16 @@ public class Trash implements Storage{
         return food.getExpiryDate().isBefore(LocalDate.now()) || food.getExpiryDate().isEqual(LocalDate.now());
     }
 
-    public void add(Food food) {
-        foodList.add(food);
+    public boolean add(Food food) {
+        boolean rsl = false;
+        if (check(food)) {
+            foodList.add(food);
+            rsl = true;
+        }
+        return rsl;
     }
 
     public List<Food> getFoodList() {
-        return foodList;
+        return List.copyOf(foodList);
     }
 }

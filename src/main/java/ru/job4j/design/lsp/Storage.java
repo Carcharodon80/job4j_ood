@@ -8,7 +8,7 @@ public interface Storage {
 
     boolean check(Food food);
 
-    void add(Food food);
+    boolean add(Food food);
 
     List<Food> getFoodList();
 

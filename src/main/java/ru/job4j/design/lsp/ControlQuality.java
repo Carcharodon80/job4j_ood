@@ -3,7 +3,7 @@ package ru.job4j.design.lsp;
 import java.util.List;
 
 public class ControlQuality {
-    private List<Storage> storages;
+    private final List<Storage> storages;
 
     public ControlQuality(List<Storage> storages) {
         this.storages = storages;
@@ -18,6 +18,6 @@ public class ControlQuality {
     }
 
     public List<Storage> getStorages() {
-        return storages;
+        return List.copyOf(storages);
     }
 }
