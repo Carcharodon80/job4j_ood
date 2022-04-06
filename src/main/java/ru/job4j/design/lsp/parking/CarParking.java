@@ -12,7 +12,7 @@ public class CarParking implements Parking{
 
     @Override
     public boolean checkFreePlaces(Car car) {
-        return car.checkCar(this);
+        return false;
     }
 
     @Override
