@@ -2,7 +2,7 @@ package ru.job4j.design.lsp.parking;
 
 public class TruckParkingStrategy implements ParkingStrategy{
     @Override
-    public boolean checkFreePlaces() {
+    public boolean checkFreePlaces(CarParking carParking) {
         return false;
     }
 }

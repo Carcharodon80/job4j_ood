@@ -1,29 +1,37 @@
 package ru.job4j.design.lsp.parking;
 
-public class CarParking implements Parking{
-    private int truckPlaces;
-    private int sedanPlaces;
-    ParkingStrategy parkingStrategy;
 
-    public CarParking(int truckPlaces, int sedanPlaces) {
-        this.truckPlaces = truckPlaces;
-        this.sedanPlaces = sedanPlaces;
-    }
+import java.util.Arrays;
 
-    @Override
-    public boolean checkFreePlaces(Car car) {
-        return false;
+/**
+ * Парковка состоит из 2-х линий, одна для легковых, другая для грузовиков (2 массива)
+ * Легковая машина может встать только на парковку для легковых и занять 1 место
+ * Грузовая или занимает 1 место на парковке для грузовых,
+ * или несколько мест на парковке для легковых (зависит от размера машины)
+ */
+public class CarParking implements Parking {
+    private int[] sedanPlaces;
+    private int[] truckPlaces;
+    private int counterId = 1;
+
+    public CarParking(int countSedanPlaces, int countTruckPlaces) {
+        this.sedanPlaces = new int[countSedanPlaces];
+        this.truckPlaces = new int[countTruckPlaces];
     }
 
     @Override
     public void addCar(Car car) {
+        ParkingStrategy parkingStrategy;
         if (car.isTruck()) {
             parkingStrategy = new TruckParkingStrategy();
         } else {
             parkingStrategy = new SedanParkingStrategy();
         }
-
-
+        if (parkingStrategy.checkFreePlaces(this)) {
+            parkCar(car);
+        } else {
+            System.out.println("Сорян, свободных мест нет...");
+        }
     }
 
     @Override
@@ -31,19 +39,15 @@ public class CarParking implements Parking{
 
     }
 
-    public int getTruckPlaces() {
-        return truckPlaces;
+    private void parkCar(Car car) {
+
     }
 
-    public void setTruckPlaces(int truckPlaces) {
-        this.truckPlaces = truckPlaces;
+    public int[] getSedanPlaces() {
+        return Arrays.copyOf(sedanPlaces, sedanPlaces.length);
     }
 
-    public int getSedanPlaces() {
-        return sedanPlaces;
-    }
-
-    public void setSedanPlaces(int sedanPlaces) {
-        this.sedanPlaces = sedanPlaces;
+    public int[] getTruckPlaces() {
+        return Arrays.copyOf(truckPlaces, truckPlaces.length);
     }
 }
