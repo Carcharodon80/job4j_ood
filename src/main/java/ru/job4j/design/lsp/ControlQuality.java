@@ -17,6 +17,9 @@ public class ControlQuality {
         }
     }
 
+    /**
+     * возвращает копию, чтобы нельзя было изменить напрямую
+     */
     public List<Storage> getStorages() {
         return List.copyOf(storages);
     }

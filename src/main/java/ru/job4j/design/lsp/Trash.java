@@ -21,6 +21,9 @@ public class Trash implements Storage{
         return rsl;
     }
 
+    /**
+     * возвращает копию, чтобы нельзя было изменить напрямую
+     */
     public List<Food> getFoodList() {
         return List.copyOf(foodList);
     }
