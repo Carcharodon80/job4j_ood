@@ -2,7 +2,7 @@ package ru.job4j.design.lsp.parking;
 
 public interface Parking {
 
-    void addCar(Car car);
+    boolean addCar(Car car);
 
-    void deleteCar(Car car);
+    boolean removeCar(Car car);
 }
