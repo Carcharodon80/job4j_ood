@@ -1,61 +1,76 @@
 package ru.job4j.design.lsp.parking;
 
 /**
- * Парковка состоит из 2-х линий, одна для легковых, другая для грузовиков (2 массива)
- * Легковая машина может встать только на парковку для легковых и занять 1 место
- * Грузовая или занимает 1 место на парковке для грузовых,
+ * Парковка состоит из 2-х линий, одна для легковых, другая для грузовиков (2 массива, заполняются id машин)
+ * Легковая машина может встать только на парковку для легковых и занять 1 место.
+ * Грузовая или занимает 1 место на парковке для грузовых (независимо от размера),
  * или несколько мест, идущих подряд, на парковке для легковых (зависит от размера машины)
  */
 public class CarParking implements Parking {
     private final int[] sedanPlaces;
     private final int[] truckPlaces;
     private int counterId = 1;
-    ParkingStrategy parkingStrategy;
 
     public CarParking(int countSedanPlaces, int countTruckPlaces) {
         this.sedanPlaces = new int[countSedanPlaces];
         this.truckPlaces = new int[countTruckPlaces];
     }
 
-    /**
-     * Сначала устанавливаем стратегию парковки (зависит от типа машины),
-     * затем проверяем пустые места,
+    /** Проверяем, что за тип машины (по размеру),
+     * затем проверяем, есть ли пустые места,
+     * присваиваем машине id,
      * затем паркуем машину,
      * увеличиваем счетчик id для машины
      */
     @Override
     public boolean addCar(Car car) {
-        boolean rsl = false;
-        if (car.isTruck()) {
-            setParkingStrategy(new TruckParkingStrategy());
-        } else {
-            setParkingStrategy(new SedanParkingStrategy());
-        }
-
-        if (parkingStrategy.checkFreePlaces(this, car)) {
+        if (car.getSize() == 1) {
+            checkFreePlacesForSedan();
             car.setId(counterId);
-            parkingStrategy.parkCar(this, car);
-            incrementCounterId();
-            rsl = true;
+            parkSedan(car);
         } else {
-            System.out.println("Сорян, свободных мест нет...");
+            checkFreePlacesForTruck(car);
+            car.setId(counterId);
+            parkTruck();
         }
+        incrementCounterId();
+        return false;
+    }
 
-        return rsl;
+    private void parkTruck() {
+    }
+
+    private boolean checkFreePlacesForTruck(Car car) {
+        return false;
+    }
+
+    private void parkSedan(Car car) {
+    }
+
+    private boolean checkFreePlacesForSedan() {
+        return false;
+    }
+
+    private void incrementCounterId() {
+        counterId++;
     }
 
     /**
      * проверяем, есть ли машина с данным id на парковке (на грузовых и легковых местах), если есть -
-     * удаляем данный id из грузовых или легковых мест (независимо от типа машины -  default методы в интерфейсе)
+     * удаляем данный id из грузовых и легковых мест (не зависит от типа машины)
      */
     @Override
     public boolean removeCar(Car car) {
-        boolean rsl = false;
-        if (parkingStrategy.checkCarOnParking(this, car)) {
-            parkingStrategy.unparkCar(this, car);
-            rsl = true;
-        }
-        return rsl;
+        checkIdOnParking(car);
+        unparkCar(car);
+        return false;
+    }
+
+    private void unparkCar(Car car) {
+    }
+
+    private boolean checkIdOnParking(Car car) {
+        return false;
     }
 
     public int[] getSedanPlaces() {
@@ -64,13 +79,5 @@ public class CarParking implements Parking {
 
     public int[] getTruckPlaces() {
         return truckPlaces;
-    }
-
-    public void setParkingStrategy(ParkingStrategy parkingStrategy) {
-        this.parkingStrategy = parkingStrategy;
-    }
-
-    private void incrementCounterId() {
-        counterId++;
     }
 }

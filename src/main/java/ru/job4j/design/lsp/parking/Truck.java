@@ -16,11 +16,6 @@ public class Truck implements Car{
         return size;
     }
 
-    @Override
-    public boolean isTruck() {
-        return true;
-    }
-
     public int getId() {
         return id;
     }
