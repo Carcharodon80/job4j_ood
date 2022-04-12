@@ -41,14 +41,14 @@ public class CarParking implements Parking {
     }
 
     private boolean checkFreePlacesForTruck(Car car) {
-        return false;
+        return true;
     }
 
     private void parkSedan(Car car) {
     }
 
     private boolean checkFreePlacesForSedan() {
-        return false;
+        return true;
     }
 
     private void incrementCounterId() {
@@ -70,7 +70,7 @@ public class CarParking implements Parking {
     }
 
     private boolean checkIdOnParking(Car car) {
-        return false;
+        return true;
     }
 
     public int[] getSedanPlaces() {
