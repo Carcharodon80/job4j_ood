@@ -20,7 +20,7 @@ public class XMLReport implements Report{
         try {
             JAXBContext context = JAXBContext.newInstance(EmlpoyeeList.class, Employee.class);
             Marshaller marshaller = context.createMarshaller();
-            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.FALSE);
             marshaller.marshal(employees, writer);
         } catch (JAXBException e) {
             e.printStackTrace();

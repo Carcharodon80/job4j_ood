@@ -16,7 +16,6 @@ public class JSONReport implements Report{
     public String generate(Predicate<Employee> filter) {
         Gson gson = new GsonBuilder().create();
         String report = gson.toJson(store.findBy(filter));
-        System.out.println(report);
         return report;
     }
 }
