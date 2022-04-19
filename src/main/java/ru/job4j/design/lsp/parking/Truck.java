@@ -1,7 +1,6 @@
 package ru.job4j.design.lsp.parking;
 
 public class Truck implements Car{
-    private int id;
     private final int size;
 
     public Truck(int size) {
@@ -14,13 +13,5 @@ public class Truck implements Car{
     @Override
     public int getSize() {
         return size;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 }
