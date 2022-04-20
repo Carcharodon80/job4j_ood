@@ -1,71 +1,56 @@
 package ru.job4j.design.lsp.parking;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Парковка состоит из 2-х линий, одна для легковых, другая для грузовиков,
  * Легковая машина может встать только на парковку для легковых и занять 1 место.
- * Грузовая или занимает 1 место на парковке для грузовых (независимо от размера),
+ * Грузовик или занимает 1 место на парковке для грузовых (независимо от размера),
  * или несколько легковых мест (зависит от размера грузовика)
  */
 public class CarParking implements Parking {
+    private final List<Car> sedanCars = new ArrayList<>();
+    private final List<Car> truckPlaces = new ArrayList<>();
     private int freeSedanPlaces;
     private int freeTruckPlaces;
 
-    public CarParking(int sedanPlaces, int truckPlaces) {
-        this.freeSedanPlaces = sedanPlaces;
-        this.freeTruckPlaces = truckPlaces;
+    public CarParking(int countSedanPlaces, int countTruckPlaces) {
+        this.freeSedanPlaces = countSedanPlaces;
+        this.freeTruckPlaces = countTruckPlaces;
     }
 
     /**
      * Проверяем, что за тип машины (по размеру),
      * затем проверяем, есть ли пустые места,
-     * если есть - паркуем (уменьшаем пустые места)
+     * если есть - паркуем (уменьшаем пустые места, добавляем машину в список машин)
      */
     @Override
     public boolean addCar(Car car) {
         boolean rsl = false;
-        if (car.getSize() == 1) {
-            if (checkFreePlacesForSedan(car)) {
-                parkSedan(car);
+        if (car.getSize() == Sedan.SIZE) {
+            if (freeSedanPlaces > 0) {
+                rsl = parkSedan(car);
             }
-            ;
-
         } else {
-            if (checkFreePlacesForTruck(car)) {
-                parkTruck(car);
+            if (freeTruckPlaces > 0 || freeSedanPlaces >= car.getSize()) {
+                rsl = parkTruck(car);
             }
         }
         return rsl;
     }
 
-
-    private boolean checkFreePlacesForSedan(Car car) {
-        return false;
+    private boolean parkSedan(Car car) {
+        freeSedanPlaces--;
+        return sedanCars.add(car);
     }
 
-    private void parkSedan(Car car) {
-
-    }
-
-    private boolean checkFreePlacesForTruck(Car car) {
-        return false;
-    }
-
-    private void parkTruck(Car car) {
-    }
-
-    public int getFreeSedanPlaces() {
-        return freeSedanPlaces;
-    }
-
-    public int getFreeTruckPlaces() {
-        return freeTruckPlaces;
-    }
-
-    public void setSedanPlaces(int sedanPlaces) {
-        this.freeSedanPlaces = sedanPlaces;
-    }
-
-    public void setTruckPlaces(int truckPlaces) {
-        this.freeTruckPlaces = truckPlaces;
+    private boolean parkTruck(Car car) {
+        if (freeTruckPlaces > 0) {
+            freeTruckPlaces--;
+        } else if (freeSedanPlaces >= car.getSize()) {
+            freeSedanPlaces -= car.getSize();
+        }
+        return truckPlaces.add(car);
     }
 }

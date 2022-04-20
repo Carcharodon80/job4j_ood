@@ -1,7 +1,6 @@
 package ru.job4j.design.lsp.parking;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.assertFalse;
@@ -15,13 +14,11 @@ public class CarParkingTest {
         carParking = new CarParking(5, 3);
     }
 
-    @Ignore
     @Test
     public void whenParkOneSedan() {
         assertTrue(carParking.addCar(new Sedan()));
     }
 
-    @Ignore
     @Test
     public void whenParkFiveSedans() {
         assertTrue(carParking.addCar(new Sedan()));
@@ -31,7 +28,6 @@ public class CarParkingTest {
         assertTrue(carParking.addCar(new Sedan()));
     }
 
-    @Ignore
     @Test
     public void whenParkSixSedans() {
         assertTrue(carParking.addCar(new Sedan()));
@@ -42,56 +38,50 @@ public class CarParkingTest {
         assertFalse(carParking.addCar(new Sedan()));
     }
 
-    @Ignore
     @Test
     public void whenParkOneTruck() {
         assertTrue(carParking.addCar(new Truck(4)));
     }
 
-    @Ignore
     @Test
     public void whenParkThreeTrucks() {
         assertTrue(carParking.addCar(new Truck(4)));
         assertTrue(carParking.addCar(new Truck(8)));
-        assertTrue(carParking.addCar(new Truck(1)));
+        assertTrue(carParking.addCar(new Truck(2)));
     }
 
-    @Ignore
     @Test
     public void whenParkFourTrucks() {
         assertTrue(carParking.addCar(new Truck(4)));
         assertTrue(carParking.addCar(new Truck(8)));
-        assertTrue(carParking.addCar(new Truck(1)));
+        assertTrue(carParking.addCar(new Truck(2)));
         assertTrue(carParking.addCar(new Truck(5)));
     }
 
-    @Ignore
     @Test
     public void whenParkFourTrucksAndOneSedan() {
         assertTrue(carParking.addCar(new Truck(4)));
         assertTrue(carParking.addCar(new Truck(8)));
-        assertTrue(carParking.addCar(new Truck(1)));
+        assertTrue(carParking.addCar(new Truck(2)));
         assertTrue(carParking.addCar(new Truck(5)));
         assertFalse(carParking.addCar(new Sedan()));
     }
 
-    @Ignore
     @Test
     public void whenParkOneSedanAndFourTrucks() {
         assertTrue(carParking.addCar(new Sedan()));
         assertTrue(carParking.addCar(new Truck(4)));
         assertTrue(carParking.addCar(new Truck(8)));
-        assertTrue(carParking.addCar(new Truck(1)));
+        assertTrue(carParking.addCar(new Truck(2)));
         assertTrue(carParking.addCar(new Truck(4)));
     }
 
-    @Ignore
     @Test
     public void whenParkOneSedanAndFourTrucks2() {
         assertTrue(carParking.addCar(new Sedan()));
         assertTrue(carParking.addCar(new Truck(4)));
         assertTrue(carParking.addCar(new Truck(8)));
-        assertTrue(carParking.addCar(new Truck(1)));
+        assertTrue(carParking.addCar(new Truck(2)));
         assertFalse(carParking.addCar(new Truck(5)));
     }
 
