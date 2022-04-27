@@ -33,4 +33,8 @@ public class Shop implements Storage {
     public List<Food> getFoodList() {
         return List.copyOf(foodList);
     }
+
+    public void removeAllFoods() {
+        foodList.clear();
+    }
 }

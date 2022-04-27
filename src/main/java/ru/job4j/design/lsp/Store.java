@@ -18,6 +18,8 @@ public class Store {
         List<Storage> storages = Arrays.asList(shop, warehouse, trash);
         ControlQuality controlQuality = new ControlQuality(storages);
         controlQuality.distribute(bread);
+        bread.setExpiryDate(LocalDate.now().plusDays(1));
+        controlQuality.resort();
         System.out.println();
     }
 }

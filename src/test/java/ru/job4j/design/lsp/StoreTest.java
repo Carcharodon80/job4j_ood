@@ -129,4 +129,45 @@ public class StoreTest {
                 50
         );
     }
+
+    /**
+     * Продукты новые, отправляются в Warehouse.
+     * Меняем дату годности, перераспределяем, отправляются в Shop и Trash.
+     */
+    @Test
+    public void whenFoodResort() {
+        Storage warehouse = new Warehouse();
+        Storage shop = new Shop();
+        Storage trash = new Trash();
+        ControlQuality controlQuality = new ControlQuality(Arrays.asList(warehouse, shop, trash));
+        Food bread = new Bread("Borodinsky",
+                LocalDate.now().plusDays(10),
+                LocalDate.now().minusDays(1),
+                30,
+                50
+        );
+        Food milk = new Milk("Moloko",
+                LocalDate.now().plusDays(20),
+                LocalDate.now().minusDays(2),
+                40,
+                10
+        );
+        controlQuality.distribute(bread);
+        controlQuality.distribute(milk);
+        assertTrue(warehouse.getFoodList().contains(bread));
+        assertFalse(shop.getFoodList().contains(bread));
+        assertFalse(trash.getFoodList().contains(bread));
+        assertTrue(warehouse.getFoodList().contains(milk));
+        assertFalse(shop.getFoodList().contains(milk));
+        assertFalse(trash.getFoodList().contains(milk));
+        bread.setExpiryDate(LocalDate.now().plusDays(2));
+        milk.setExpiryDate(LocalDate.now().minusDays(1));
+        controlQuality.resort();
+        assertFalse(warehouse.getFoodList().contains(bread));
+        assertTrue(shop.getFoodList().contains(bread));
+        assertFalse(trash.getFoodList().contains(bread));
+        assertFalse(warehouse.getFoodList().contains(milk));
+        assertFalse(shop.getFoodList().contains(milk));
+        assertTrue(trash.getFoodList().contains(milk));
+    }
 }
