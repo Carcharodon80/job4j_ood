@@ -7,24 +7,23 @@ public class SimpleMenu implements Menu {
 
     @Override
     public boolean add(String parentName, String childName, ActionDelegate actionDelegate) {
-        if (Objects.equals(parentName, Menu.ROOT)) {
-            rootElements.add(new SimpleMenuItem(childName, actionDelegate));
-        } else {
-            MenuItem menuItem = findItem(parentName).get().menuItem;
-            menuItem.getChildren().add(new SimpleMenuItem(childName, actionDelegate));
+        if (findItem(childName).isEmpty()) {
+            if (Objects.equals(parentName, Menu.ROOT)) {
+                rootElements.add(new SimpleMenuItem(childName, actionDelegate));
+            } else {
+                if (findItem(parentName).isPresent()) {
+                    MenuItem menuItem = findItem(parentName).get().menuItem;
+                    menuItem.getChildren().add(new SimpleMenuItem(childName, actionDelegate));
+                }
+            }
         }
         return true;
     }
 
     @Override
     public Optional<MenuItemInfo> select(String itemName) {
-        MenuItemInfo menuItemInfo = null;
         Optional<ItemInfo> optional = findItem(itemName);
-        if (optional.isPresent()) {
-            ItemInfo itemInfo = optional.get();
-            menuItemInfo = new MenuItemInfo(itemInfo.menuItem, itemInfo.number);
-        }
-        return Optional.ofNullable(menuItemInfo);
+        return optional.map(x -> new MenuItemInfo(x.menuItem, x.number));
     }
 
     @Override
@@ -51,6 +50,7 @@ public class SimpleMenu implements Menu {
             ItemInfo itemInfo = iterator.next();
             if (itemInfo.menuItem.getName().equals(name)) {
                 optionalItemInfo = Optional.of(itemInfo);
+                break;
             }
         }
         return optionalItemInfo;
@@ -110,7 +110,7 @@ public class SimpleMenu implements Menu {
             String lastNumber = numbers.removeFirst();
             List<MenuItem> children = current.getChildren();
             int currentNumber = children.size();
-            for (var i = children.listIterator(children.size()); i.hasPrevious(); ) {
+            for (var i = children.listIterator(children.size()); i.hasPrevious();) {
                 stack.addFirst(i.previous());
                 numbers.addFirst(lastNumber.concat(String.valueOf(currentNumber--)).concat("."));
             }
