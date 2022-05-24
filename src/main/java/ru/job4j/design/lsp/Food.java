@@ -3,7 +3,7 @@ package ru.job4j.design.lsp;
 import java.time.LocalDate;
 
 public abstract class Food {
-    private String Name;
+    private String name;
     private LocalDate expiryDate;
     private LocalDate createDate;
     private double price;
@@ -13,7 +13,7 @@ public abstract class Food {
         if (expiryDate.isBefore(createDate) || (createDate.isAfter(LocalDate.now()))) {
             throw new IllegalArgumentException();
         }
-        Name = name;
+        name = name;
         this.expiryDate = expiryDate;
         this.createDate = createDate;
         this.price = price;
@@ -21,11 +21,11 @@ public abstract class Food {
     }
 
     public String getName() {
-        return Name;
+        return name;
     }
 
     public void setName(String name) {
-        Name = name;
+        name = name;
     }
 
     public LocalDate getExpiryDate() {

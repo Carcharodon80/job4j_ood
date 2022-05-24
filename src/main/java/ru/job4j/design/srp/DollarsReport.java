@@ -2,9 +2,9 @@ package ru.job4j.design.srp;
 
 import java.util.function.Predicate;
 
-public class DollarsReport implements Report{
+public class DollarsReport implements Report {
     private Store store;
-    public static final int dollar = 100;
+    public static final int DOLLAR = 100;
 
     public DollarsReport(Store store) {
         this.store = store;
@@ -19,7 +19,7 @@ public class DollarsReport implements Report{
             text.append(employee.getName()).append(";")
                     .append(employee.getHired()).append(";")
                     .append(employee.getFired()).append(";")
-                    .append(employee.getSalary()/dollar).append("$")
+                    .append(employee.getSalary() / DOLLAR).append("$")
                     .append(System.lineSeparator());
         }
         return text.toString();

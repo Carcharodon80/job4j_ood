@@ -4,5 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public interface Account {
-    List<Ticket> tickets = new ArrayList<>();
+    List<Ticket> TICKETS = new ArrayList<>();
+
+    void someMethod();
 }

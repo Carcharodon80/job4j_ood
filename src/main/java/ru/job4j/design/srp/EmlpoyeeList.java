@@ -19,7 +19,7 @@ public class EmlpoyeeList {
     public EmlpoyeeList() {
     }
 
-    @XmlElement(name="employee")
+    @XmlElement(name = "employee")
     public List<Employee> getList() {
         return list;
     }

@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Trash implements Storage{
+public class Trash implements Storage {
     private final List<Food> foodList = new ArrayList<>();
 
     @Override

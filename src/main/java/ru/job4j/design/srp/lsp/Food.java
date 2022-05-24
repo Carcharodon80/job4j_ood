@@ -3,14 +3,14 @@ package ru.job4j.design.srp.lsp;
 import java.time.LocalDate;
 
 public abstract class Food {
-    private String Name;
+    private String name;
     private LocalDate expiryDate;
     private LocalDate createDate;
     private double price;
     private int dicsount;
 
     public Food(String name, LocalDate expiryDate, LocalDate createDate, double price, int dicsount) {
-        Name = name;
+        name = name;
         this.expiryDate = expiryDate;
         this.createDate = createDate;
         this.price = price;
@@ -18,11 +18,11 @@ public abstract class Food {
     }
 
     public String getName() {
-        return Name;
+        return name;
     }
 
     public void setName(String name) {
-        Name = name;
+        name = name;
     }
 
     public LocalDate getExpiryDate() {

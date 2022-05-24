@@ -38,7 +38,7 @@ public class CinemaTest {
         Cinema cinema = new Cinema3D();
         Session session = new Session3D();
         cinema.add(session);
-        assertTrue(cinema.sessions.contains(session));
+        assertTrue(cinema.SESSIONS.contains(session));
     }
 
     @Ignore
@@ -49,7 +49,7 @@ public class CinemaTest {
         Calendar date = Calendar.getInstance();
         date.set(2020, 10, 10, 23, 00);
         Ticket ticket = cinema.buy(account, 1, 1, date);
-        assertTrue(account.tickets.contains(ticket));
+        assertTrue(account.TICKETS.contains(ticket));
     }
 
     @Ignore

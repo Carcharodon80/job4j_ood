@@ -3,7 +3,7 @@ package ru.job4j.design.srp.lsp;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Warehouse implements Storage{
+public class Warehouse implements Storage {
     List<Food> foodList = new ArrayList<>();
 
     @Override

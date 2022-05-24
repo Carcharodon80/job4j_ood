@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.function.Predicate;
 
 public interface Cinema {
-    List<Session> sessions = new ArrayList<>();
+    List<Session> SESSIONS = new ArrayList<>();
 
     List<Session> find(Predicate<Session> filter);
 

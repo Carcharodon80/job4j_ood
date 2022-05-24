@@ -5,7 +5,7 @@ import com.google.gson.GsonBuilder;
 
 import java.util.function.Predicate;
 
-public class JSONReport implements Report{
+public class JSONReport implements Report {
     private final Store store;
 
     public JSONReport(Store store) {

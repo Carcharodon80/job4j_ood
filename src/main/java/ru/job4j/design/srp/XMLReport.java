@@ -6,7 +6,7 @@ import javax.xml.bind.Marshaller;
 import java.io.StringWriter;
 import java.util.function.Predicate;
 
-public class XMLReport implements Report{
+public class XMLReport implements Report {
     private final Store store;
 
     public XMLReport(Store store) {
